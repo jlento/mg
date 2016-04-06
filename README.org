@@ -1,0 +1,25 @@
+* Multigrid demo in 1D
+
+This demo shows how iterative Jacobi, Gauss-Seidel and Multigrid
+solvers co0nverge in case of Poisson equation in 1D for a simple,
+fixed source. It plots the development of solution at runtime using gnuplot.
+
+** Build
+
+#+BEGIN_SRC bash
+cd build
+make -f ../src/makefile
+#+END_SRC
+
+** Play
+
+#+BEGIN_SRC bash
+time ./test_1d 20 DD J | tee >(gnuplot --persist)
+#+END_SRC
+
+One can vary the size of the system, the boundary conditions and the
+solver with the 1st, 2nd and 3rd command line argument,
+respectively. Valid values for boundary conditions are ~DD~, ~NN~ and
+~PP~, for Dirichlet, Neumann, and periodic boundary conditions,
+respectively. The solver can be ~J~, ~GS~, or ~MG~, for Jacobi,
+Gauss-Seidel, or Multigrid W-cycle, respectively.
