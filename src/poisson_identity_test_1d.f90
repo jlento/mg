@@ -1,5 +1,5 @@
 program poisson_identity_test_1d
-  use iso_fortran_env, only : ou => output_unit
+  use iso_fortran_env, only : INT64, ou => output_unit
   use mod_defs
   use mod_poisson_identity_test_1d
   use mod_poisson_solver_1d
@@ -19,7 +19,8 @@ program poisson_identity_test_1d
 
   real ( fp )  :: h, bc_ax, bc_bx
   real ( fp ), dimension ( : ), allocatable :: x, f, u
-  integer :: i, tstart ( nsolvers ), tstop ( nsolvers ), rate
+  integer :: i
+  integer ( INT64 ) :: tstart ( nsolvers ), tstop ( nsolvers ), rate
 
   call read_command_line_args()
 
