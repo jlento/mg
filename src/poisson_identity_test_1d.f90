@@ -27,7 +27,7 @@ program poisson_identity_test_1d
   h     = 1.0_fp / real ( nx, fp )
   x     = [ ( i * h, i = 0, nx ) ]
 
-  ! Test syste boundary conditions
+  ! Boundary values
   bc_ax = 0.0_fp
   bc_bx = 0.0_fp
 
@@ -117,7 +117,13 @@ contains
          'set multiplot layout 2, 1 title "Poisson equation in 1D"'
 
     write ( ou, '(a)') 'set title "Solutions"'
-    write ( ou, '(100(a,/))' ) &
+    select case ( bc_type ( bc ) )
+       case ( BC_DD, BC_PP )
+          write ( ou, '(a)') 'set yrange [-4:4]'
+       case ( BC_NN )
+          write ( ou, '(a)') 'set yrange [-8:4]'
+       end select
+       write ( ou, '(100(a,/))' ) &
          'plot "$db" u 1:2 w impulses lc 1, \', &
          '     "$db" u 1:3 w lp lc 2, \', &
          '     "$db" u 1:4 w l lc 3, \', &
@@ -125,6 +131,7 @@ contains
          '     "$db" u 1:6 w l lc 5'
 
     write ( ou, '(a)') 'set title "Errors"'
+    write ( ou, '(a)') 'unset yrange'
     write ( ou, '(100(a,/))' ) &
          'plot "$db" u 1:($4-$3) w l lc 3, \', &
          '     "$db" u 1:($5-$3) w l lc 4, \', &
