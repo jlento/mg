@@ -15,10 +15,8 @@ module mod_poisson_1d
      procedure :: new_poisson_1d
   end interface poisson_1d
 
-  
 contains
 
-  
   function new_poisson_1d ( f, bc, bc_ax, bc_bx, level ) result ( self )
     real ( fp ), dimension ( : ), intent ( in ) :: f
     real ( fp ), intent ( in ) :: bc_ax, bc_bx
@@ -36,7 +34,6 @@ contains
 
   end function new_poisson_1d
 
-  
   function bc_type ( s )
     character ( * ), intent (in ) :: s
     integer :: bc_type

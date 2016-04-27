@@ -26,6 +26,7 @@ contains
               + u ( 1 : n - 1 ) + u ( 3 : n + 1 ) )
          u ( 1     ) = u1
          u ( n + 1 ) = u1
+         u = u - u1
       case ( BC_NN )
          u1 = u ( 2 ) - x % bc_ax
          un = u ( n ) + x % bc_bx
