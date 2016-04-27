@@ -32,6 +32,7 @@ contains
          un = u ( n ) + x % bc_bx
          u ( 2 : n ) = 0.5_fp * ( f ( 2 : n ) &
               + u ( 1 : n - 1 ) + u ( 3 : n + 1 ) )
+         u ( 1 )     = u1
          u ( n + 1 ) = un
          u = u - u1
       end select
