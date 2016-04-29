@@ -98,48 +98,48 @@ contains
     integer :: i, j
 
     ! Gnuplot inline data block
-    write ( ou, '(a)') '$db << EOD'
-    write ( ou, '(100a15)' ) '"x"', '"f"', '"Ref"', &
+    write ( ou, '(/,a)') '$db << EOD'
+    write ( ou, '(*(a15))' ) '"x"', '"f"', '"Ref"', &
          ( '"' // trim ( method ( i ) ) // '"', i = 1, nsolvers)
     do j = 1, nx + 1
-       write ( ou, '(100e15.5)' ) &
+       write ( ou, '(*(e15.5))' ) &
             x ( j ), &
             f ( j ), &
             u ( j ), &
             ( system ( i ) % u ( j ), i = 1, nsolvers )
     end do
-    write ( ou, '(a,/)') 'EOD'
+    write ( ou, '(a)') 'EOD'
     
-    write ( ou, '(4(a,/),a,/)') &
+    write ( ou, '(/,*(a,:,/))') &
          'set xzeroaxis', &
          'set xrange [0:1]', &
          'set key outside autotitle columnhead &
          &title "' // bc // ' boundary conditions"', &
          'set multiplot layout 2, 1 title "Poisson equation in 1D"'
 
-    write ( ou, '(a)') 'set title "Solutions"'
+    write ( ou, '(/,a)') 'set title "Solutions"'
     select case ( bc_type ( bc ) )
-       case ( BC_DD, BC_PP )
-          write ( ou, '(a)') 'set yrange [-4:4]'
-       case ( BC_NN )
-          write ( ou, '(a)') 'set yrange [-8:4]'
-       end select
-       write ( ou, '(100(a,/))' ) &
-         'plot "$db" u 1:2 w impulses lc 1, \', &
-         '     "$db" u 1:3 w lp lc 2, \', &
-         '     "$db" u 1:4 w l lc 3, \', &
-         '     "$db" u 1:5 w l lc 4, \', &
-         '     "$db" u 1:6 w l lc 5'
+    case ( BC_DD, BC_PP )
+       write ( ou, '(a)') 'set yrange [-4:4]'
+    case ( BC_NN )
+       write ( ou, '(a)') 'set yrange [-8:4]'
+    end select
+    write ( ou, '("plot",2(T6,a,/),*(T6,a,i0,a,i0,:,", \",/))' ) &
+         '"$db" u 1:2 w impulses lc 1, \', &
+         '"$db" u 1:3 w lp lc 2, \', &
+         ( &
+         '"$db" u 1:', i + 3, ' w l lc ', i + 2, &
+         i = 1, nsolvers )
 
-    write ( ou, '(a)') 'set title "Errors"'
+    write ( ou, '(/,a)') 'set title "Errors"'
     write ( ou, '(a)') 'unset yrange'
-    write ( ou, '(100(a,/))' ) &
-         'plot "$db" u 1:($4-$3) w l lc 3, \', &
-         '     "$db" u 1:($5-$3) w l lc 4, \', &
-         '     "$db" u 1:($6-$3) w l lc 5'
+    write ( ou, '("plot",*(T6,a,i0,a,i0,:,", \",/))' ) &
+         ( &
+         '"$db" u 1:($', i + 3, '-$3) w l lc ', i + 2, &
+         i = 1, nsolvers )
 
     
-    write ( ou, '("#",a25,3a15)' ) 'Method: ', &
+    write ( ou, '(/,"#",a25,3a15)' ) 'Method: ', &
          ( trim ( method (i) ), i = 1, nsolvers )
     write ( ou, '("#",a25,3i15,/,5("#",a25,3f15.5,/))' )  &
          'Number of iterations: ', &
