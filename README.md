@@ -30,11 +30,10 @@ A fresh Ubuntu 16.04 virtual machine with all necessary packages should
 eventually boot. The project root `.../mg/` on the host machine is
 synchronized to directory `/vagrant` in the guest VM.
 
-You may need to fix the keyboard settings in the VM to what you actully have
+You may need to fix the keyboard settings in the VM to what you actually have
 in the front of you, for me for example with
 
     gsettings set org.gnome.desktop.input-sources sources "[('xkb', 'fi+mac')]"
-
 
 
 Build
