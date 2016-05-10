@@ -22,8 +22,10 @@ Development environment
 
 3. Run commands
 
+```
     cd mg
     vagrant up
+```
 
 A fresh Ubuntu 16.04 virtual machine with all necessary packages should
 eventually boot. The project root `.../mg/` on the host machine is
