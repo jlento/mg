@@ -15,17 +15,16 @@ development of solution at runtime with gnuplot.
 Development environment
 -----------------------
 
-1. Install git, VirtualBox and Vagrant (1.8.2+).
+1. Install git, VirtualBox and Vagrant (1.8.2+) to your OS.
+
 2. Clone this repository
 
-    git clone https://github.com/jlento/mg.git
+        git clone https://github.com/jlento/mg.git
 
 3. Run commands
 
-```
-    cd mg
-    vagrant up
-```
+        cd mg
+        vagrant up
 
 A fresh Ubuntu 16.04 virtual machine with all necessary packages should
 eventually boot. The project root `.../mg/` on the host machine is
