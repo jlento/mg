@@ -5,20 +5,40 @@ solutions converge in case of Poisson equation in 1D for a simple,
 fixed source. The iteration is stopped when the change in the residual
 between subsequent iterations is small.
 
-The output of the demo can be directly piped to gnuplot. Also, the
-demo uses gnuplot to visualize the development of solution at runtime.
+The output of the demo can be directly piped to gnuplot5.
 
-** Requirements
+Also, the demo contains sources that can be used to visualize the
+development of solution at runtime with gnuplot.
 
-On Ubuntu 15.10, in addition to what one gets by default, I have installed
-the following packages:
 
-- synaptic
-- emacs
-- git
-- gfortran
-- makedepf90
-- gnuplot5
+** Development environment
+
+1. Install git, VirtualBox and Vagrant (1.8.2+).
+
+2. Clone this repository
+
+#+BEGIN_SRC bash
+git clone https://github.com/jlento/mg.git
+#+END_SRC
+
+3. Run commands
+
+#+BEGIN_SRC bash
+cd mg
+vagrant up
+#+END_SRC
+
+A fresh Ubuntu 16.04 virtual machine with all necessary packages should
+eventually boot. The project root ~.../mg/~ on the host machine is
+synchronized to directory ~/vagrant~ in the guest VM.
+
+You may need to fix the keyboard settings in the VM to what you actully have
+in the front of you, for me for example with
+
+#+BEGIN_SRC
+gsettings set org.gnome.desktop.input-sources sources "[('xkb', 'fi+mac')]"
+#+END_SRC
+
 
 ** Build
 
@@ -26,6 +46,7 @@ the following packages:
 cd build
 make -f ../src/makefile
 #+END_SRC
+
 
 ** Play
 
