@@ -21,6 +21,7 @@ Development environment
     git clone https://github.com/jlento/mg.git
 
 3. Run commands
+
     cd mg
     vagrant up
 
@@ -31,26 +32,21 @@ synchronized to directory `/vagrant` in the guest VM.
 You may need to fix the keyboard settings in the VM to what you actully have
 in the front of you, for me for example with
 
-```
-gsettings set org.gnome.desktop.input-sources sources "[('xkb', 'fi+mac')]"
-```
+    gsettings set org.gnome.desktop.input-sources sources "[('xkb', 'fi+mac')]"
+
 
 
 Build
 -----
 
-```
-cd build
-make -f ../src/makefile
-```
+    cd build
+    make -f ../src/makefile
 
 
 Play
 ----
 
-```
-time ./poisson_identity_test_1d 20 DD | tee >(gnuplot --persist)
-```
+    time ./poisson_identity_test_1d 20 DD | tee >(gnuplot --persist)
 
 One can vary the size of the system and the boundary conditions and
 the solver with the 1st and 2nd command line argument,
