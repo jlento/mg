@@ -15,25 +15,29 @@ development of solution at runtime with gnuplot.
 Development environment
 -----------------------
 
+Let's use Ubuntu 16.04 LTS virtual machine as a reference environment.
+
 1. Install git, VirtualBox and Vagrant (1.8.2+) to your OS.
 
 2. Clone this repository
 
         git clone https://github.com/jlento/mg.git
 
-3. Run commands
+3. Go to the cloned project root `mg` and boot up the VM
 
         cd mg
         vagrant up
 
-A fresh Ubuntu 16.04 virtual machine with all necessary packages should
-eventually boot. The project root `.../mg/` on the host machine is
-synchronized to directory `/vagrant` in the guest VM.
+4. Vagrant version 1.8.1 or earlier fails to provision the VM, but that
+   can be done manually (this step is unnecessary for Vagrant 1.8.2+)
 
-You may need to fix the keyboard settings in the VM to what you actually have
-in the front of you, for me for example with
+        vagrant ssh -c "sudo bash /vagrant/bootstrap.sh"
+        vagrant reload
 
-    gsettings set org.gnome.desktop.input-sources sources "[('xkb', 'fi+mac')]"
+5. You may need to fix the keyboard settings in the VM to what you
+   actually have in the front of you, for me for example with
+
+        gsettings set org.gnome.desktop.input-sources sources "[('xkb', 'fi+mac')]"
 
 
 Build
