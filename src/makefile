@@ -31,3 +31,9 @@ deps.mk : $(SRC_$(PROG))
 	[ -x $(MAKEDEPF90) ] && $(MAKEDEPF90) -b '' $^ > $@
 
 include deps.mk
+
+# Bug in GCC 5.3.1 Ubuntu
+ifeq ($(shell $(FC) -dumpversion),5.3.1)
+  mod_poisson_1d.o : FCFLAGS = -g -pg -march=native -Wall
+endif
+
