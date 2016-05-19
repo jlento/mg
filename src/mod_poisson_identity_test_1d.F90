@@ -2,7 +2,7 @@ module mod_poisson_identity_test_1d
   use iso_fortran_env, only : eu => error_unit
   use mod_defs
   use mod_poisson_1d
-  use mod_poisson_solver_1d, only : method
+  use mod_poisson_solver_1d
   implicit none
 
 contains
