@@ -1,8 +1,8 @@
-module mod_poisson_identity_test_1d
+module mod_poisson_1d_identity_test
   use iso_fortran_env, only : eu => error_unit
   use mod_defs
   use mod_poisson_1d
-  use mod_poisson_solver_1d
+  use mod_poisson_1d_solver
   implicit none
 
 contains
@@ -82,4 +82,4 @@ contains
     end do
   end function piecewise_linear
 
-end module mod_poisson_identity_test_1d
+end module mod_poisson_1d_identity_test

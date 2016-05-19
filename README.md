@@ -50,7 +50,7 @@ Build
 Play
 ----
 
-    time ./poisson_identity_test_1d 20 DD | tee >(gnuplot --persist)
+    time ./poisson_1d_identity_test 20 DD | tee >(gnuplot --persist)
 
 One can vary the size of the system and the boundary conditions and
 the solver with the 1st and 2nd command line argument,

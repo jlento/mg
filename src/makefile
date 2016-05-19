@@ -7,13 +7,13 @@ ifdef PETSC_DIR
   FCFLAGS = -DHAVE_PETSC
 endif
 
-PROG = poisson_identity_test_1d
+PROG = poisson_1d_identity_test
 
 SRC_$(PROG) = \
     $(PROG).F90  mod_defs.F90 \
-    mod_poisson_1d.F90            mod_poisson_solver_1d.F90 \
+    mod_poisson_1d.F90            mod_poisson_1d_solver.F90 \
     mod_poisson_1d_Jacobi.F90     mod_poisson_1d_GS.F90 \
-    mod_poisson_1d_MG.F90 \
+    mod_poisson_1d_MG.F90         mod_poisson_1d_PETSc_MG.F90 \
     mod_$(PROG).F90
 
 OBJ_$(PROG) = $(addsuffix .o,$(basename $(SRC_$(PROG))))

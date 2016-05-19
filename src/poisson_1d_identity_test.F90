@@ -1,7 +1,7 @@
 program poisson_identity_test_1d
   use iso_fortran_env, only : INT64, ou => output_unit
   use mod_defs
-  use mod_poisson_identity_test_1d
+  use mod_poisson_1d_identity_test
   implicit none
 
   ! Command line arguments
