@@ -2,18 +2,12 @@ program poisson_identity_test_1d
   use iso_fortran_env, only : INT64, ou => output_unit
   use mod_defs
   use mod_poisson_identity_test_1d
-  use mod_poisson_solver_1d
+  use mod_poisson_solver_1d, only: nsolvers, solve
   implicit none
 
   ! Command line arguments
   integer         :: nx
   character ( 2 ) :: bc
-
-  integer, parameter :: nsolvers = 3
-  character ( 12 ), parameter :: method ( nsolvers ) = [ &
-       'Jacobi      ', &
-       'Gauss-Seidel', &
-       'Multigrid   ' ]
   
   type ( poisson_1d ), dimension ( nsolvers ) :: system
 
@@ -44,7 +38,7 @@ program poisson_identity_test_1d
      system ( i ) = poisson_1d ( f * h * 4.0_fp, &
           bc_type ( bc ), bc_ax, bc_bx, level = 0 )
      call system_clock ( tstart ( i ), rate )
-     call solve ( system ( i ), method ( i ) )
+     call solve ( system ( i ), i )
      call system_clock ( tstop ( i ) )
   end do
 
