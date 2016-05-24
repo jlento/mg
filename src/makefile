@@ -4,7 +4,12 @@ MAKEDEPF90   = /usr/bin/makedepf90
 FCFLAGS = -g -pg -march=native -Wall -fcheck=all
 
 ifdef PETSC_DIR
-  FCFLAGS = -DHAVE_PETSC
+  PETSC_ARCH = arch-linux2-c-debug
+  FCFLAGS += -DHAVE_PETSC \
+             -I$(PETSC_DIR)/include \
+             -I$(PETSC_DIR)/$(PETSC_ARCH)/include \
+             -I/usr/lib/openmpi/include
+  LDFLAGS += -L$(PETSC_DIR)/$(PETSC_ARCH)/lib -lpetsc
 endif
 
 PROG = poisson_1d_identity_test
@@ -23,7 +28,7 @@ vpath %.F90 : ../src
 .PHONY : clean
 
 $(PROG) : $(OBJ_$(PROG))
-	$(FC) $(FCFLAGS) -o $@ $^
+	$(FC) $(FCFLAGS) -o $@ $^ $(LDFLAGS)
 
 %.o : %.F90
 	$(FC) $(FCFLAGS) -c $<
@@ -34,7 +39,7 @@ clean :
 deps.mk : $(SRC_$(PROG))
 	[ -x $(MAKEDEPF90) ] && $(MAKEDEPF90) -b '' $^ > $@
 
--include deps.mk
+include deps.mk
 
 # Bug in GCC 5.3.1 Ubuntu
 ifeq ($(shell $(FC) -dumpversion),5.3.1)

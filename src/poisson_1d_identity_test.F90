@@ -5,8 +5,8 @@ program poisson_identity_test_1d
   implicit none
 
   ! Command line arguments
-  integer         :: nx
-  character ( 2 ) :: bc
+  integer         :: nx = 10000
+  character ( 2 ) :: bc ='DD'
   
   type ( poisson_1d ), dimension ( nsolvers ) :: system
 
@@ -15,7 +15,7 @@ program poisson_identity_test_1d
   integer :: i
   integer ( INT64 ) :: tstart ( nsolvers ), tstop ( nsolvers ), rate
 
-  call read_command_line_args()
+!  call read_command_line_args()
 
   ! Domain is [ 0, 1 ]
   h     = 1.0_fp / real ( nx, fp )
@@ -132,21 +132,20 @@ contains
          i = 1, nsolvers )
 
     
-    write ( ou, '(/,"#",a25,3a15)' ) 'Method: ', &
+    write ( ou, '(/,"#",a25,*(a15))' ) 'Method: ', &
          ( trim ( method (i) ), i = 1, nsolvers )
-    write ( ou, '("#",a25,3i15,/,5("#",a25,3f15.5,/))' )  &
-         'Number of iterations: ', &
-         ( system ( i ) % it, i = 1, nsolvers ), &
-         'Wall clock time (s): ', &
-         real ( tstop - tstart, fp ) / real ( rate, fp ), &
-         'Residual RMS: ', &
-         ( rms ( residual ( system ( i ) ) ) , i = 1, nsolvers ), &
-         'Residual maximum: ', &
+    write ( ou, '("#",a25,*(i15))' ) 'Number of iterations: ', &
+         ( system ( i ) % it, i = 1, nsolvers )
+    write ( ou, '("#",a25,*(f15.5))' ) 'Wall clock time (s): ', &
+         real ( tstop - tstart, fp ) / real ( rate, fp )
+    write ( ou, '("#",a25,*(f15.5))' ) 'Residual RMS: ', &
+         ( rms ( residual ( system ( i ) ) ) , i = 1, nsolvers )
+    write ( ou, '("#",a25,*(f15.5))' ) 'Residual maximum: ', &
          ( sqrt ( maxval ( residual ( system ( i ) ) ** 2 ) ) , &
-         i = 1, nsolvers ), &
-         'Error RMS: ', &
-         ( rms ( system ( i ) % u - u ) , i = 1, nsolvers ), &
-         'Error maximum: ', &
+         i = 1, nsolvers )
+    write ( ou, '("#",a25,*(f15.5))' ) 'Error RMS: ', &
+         ( rms ( system ( i ) % u - u ) , i = 1, nsolvers )
+    write ( ou, '("#",a25,*(f15.5))' ) 'Error maximum: ', &
          ( sqrt ( maxval ( ( system ( i ) % u - u ) ** 2 ) ) , &
          i = 1, nsolvers )
     
