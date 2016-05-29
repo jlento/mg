@@ -62,7 +62,7 @@ subroutine ComputeRHS ( ksp, b, ctx, ierr )
   Vec          b
   type ( poisson_1d ) :: ctx
   PetscErrorCode  ierr
-  integer :: i, n
+  PetscInt :: i, n
   PetscScalar c
   n = size ( ctx % f )
   call VecSetValues ( b, n, [ ( i , i = 0, n - 1 ) ], &
