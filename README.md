@@ -8,6 +8,9 @@ between subsequent iterations is small.
 
 The output of the demo can be directly piped to gnuplot5.
 
+If PETSc is available, it is used to solve the equation using
+it's own multigrid solver.
+
 Also, the demo contains sources that can be used to visualize the
 development of solution at runtime with gnuplot.
 

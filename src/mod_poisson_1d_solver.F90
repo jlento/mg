@@ -4,13 +4,13 @@ module mod_poisson_1d_solver
   use mod_poisson_1d_Jacobi
   use mod_poisson_1d_GS
   use mod_poisson_1d_MG
+#ifdef HAVE_PETSC
   use mod_poisson_1d_PETSc_MG
   implicit none
-
-#ifndef HAVE_PETSC
-  integer, parameter :: nsolvers = 3
-#else
   integer, parameter :: nsolvers = 4
+#else
+  implicit none
+  integer, parameter :: nsolvers = 3
 #endif
 
   integer, parameter ::  JACOBI = 1, GAUSS_SEIDEL = 2, MULTIGRID = 3, &

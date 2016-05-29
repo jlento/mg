@@ -5,7 +5,7 @@ program poisson_identity_test_1d
   implicit none
 
   ! Command line arguments
-  integer         :: nx = 10000
+  integer         :: nx = 20
   character ( 2 ) :: bc ='DD'
   
   type ( poisson_1d ), dimension ( nsolvers ) :: system
@@ -15,7 +15,13 @@ program poisson_identity_test_1d
   integer :: i
   integer ( INT64 ) :: tstart ( nsolvers ), tstop ( nsolvers ), rate
 
-!  call read_command_line_args()
+#ifdef HAVE_PETSC
+#include <petsc/finclude/petscsys.h>
+  PetscErrorCode :: ierr
+  call  PetscInitialize( PETSC_NULL_CHARACTER, ierr )
+#endif
+
+  call read_command_line_args()
 
   ! Domain is [ 0, 1 ]
   h     = 1.0_fp / real ( nx, fp )
@@ -43,6 +49,10 @@ program poisson_identity_test_1d
 
   call write_footer
 
+#ifdef HAVE_PETSC
+  call PetscFinalize ( ierr )
+#endif
+  
 contains
 
   subroutine usage
