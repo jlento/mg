@@ -27,21 +27,22 @@ program poisson_identity_test_1d
   h     = 1.0_fp / real ( nx, fp )
   x     = [ ( i * h, i = 0, nx ) ]
 
-  ! Boundary values
+  ! Boundary value at x=0
   bc_ax = 0.0_fp
+  
+  ! Boundary value, or derivative in case of Neumann boundary
+  ! condition, at x=1
   bc_bx = 0.0_fp
 
   call write_header
 
   ! Reference system
-  u     = 4.0_fp * h &
-          * test_solution ( nx, h, bc_type ( bc ), bc_ax, bc_bx )
-  f     = -1.0_fp * laplace ( u / h / 4.0_fp, bc_type ( bc ), bc_ax, bc_bx )
-
+  u     = test_solution ( nx, bc_type ( bc ), bc_ax, bc_bx )
+  f     = - laplace ( u, bc_type ( bc ), bc_ax, bc_bx )
+  
   ! Solvers
   do i = 1, nsolvers
-     system ( i ) = poisson_1d ( f * h * 4.0_fp, &
-          bc_type ( bc ), bc_ax, bc_bx, level = 0 )
+     system ( i ) = poisson_1d ( f, bc_type ( bc ), bc_ax, bc_bx, 0 )
      call system_clock ( tstart ( i ), rate )
      call solve ( system ( i ), i )
      call system_clock ( tstop ( i ) )
@@ -64,13 +65,15 @@ contains
          '    poisson_identity_test_1d NX BC', &
          '', &
          '    where NX is the number of intervals in the discretization,', &
-         '    and the boundary condition BC is either "DD", "PP", or "NN",', &
-         '    for Dirichlet, periodic, or Neumann, respectively.', &
+         '    and the boundary condition BC is either "DD", "DP", or "DN",', &
+         '    for Dirichlet boundary condition on the left boundary, and', &
+         '    Dirichlet, periodic, or Neumann boundary condition on the', &
+         '    right boundary, respectively.', &
          '', &
          '    The output can be piped directly to gnuplot 5.0+.', &
          '', &
          'Example:', &
-         '    time ./test_1d 20 PP | tee >(gnuplot -e "set term wxt" -p -)'
+         '    time ./test_1d 20 DP | tee >(gnuplot -e "set term wxt" -p -)'
   end subroutine usage
 
   subroutine read_command_line_args ()
@@ -107,7 +110,7 @@ contains
     do j = 1, nx + 1
        write ( ou, '(*(e15.5))' ) &
             x ( j ), &
-            f ( j ), &
+            f ( j ) / h / 4.0_fp, &
             u ( j ), &
             ( system ( i ) % u ( j ), i = 1, nsolvers )
     end do
@@ -122,9 +125,9 @@ contains
 
     write ( ou, '(/,a)') 'set title "Solutions"'
     select case ( bc_type ( bc ) )
-    case ( BC_DD, BC_PP )
+    case ( BC_DD, BC_DP )
        write ( ou, '(a)') 'set yrange [-4:4]'
-    case ( BC_NN )
+    case ( BC_DN )
        write ( ou, '(a)') 'set yrange [-8:4]'
     end select
     write ( ou, '("plot",2(T6,a,/),*(T6,a,i0,a,i0,:,", \",/))' ) &

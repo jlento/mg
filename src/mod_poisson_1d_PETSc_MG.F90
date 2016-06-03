@@ -67,6 +67,12 @@ subroutine ComputeRHS ( ksp, b, ctx, ierr )
   n = size ( ctx % f )
   call VecSetValues ( b, n, [ ( i , i = 0, n - 1 ) ], &
        real ( ctx % f, kind ( c ) ), INSERT_VALUES, ierr )
+  if ( ctx % bc .eq. BC_DN ) then
+     i = 1
+     call VecSetValues ( b, i, [ int ( n - 1, kind ( i ) ) ], &
+          real ( 2.0_fp * ctx % bc_bx, kind ( c ) ), &
+          ADD_VALUES, ierr )
+  end if
 end subroutine ComputeRHS
 
 
@@ -83,12 +89,14 @@ subroutine ComputeMatrix(ksp,JJ,jac,ctx,ierr)
   KSP               ksp
   DM                da
   PetscInt          i, mx
-  PetscInt          xs, xm,  i1, i7
+  PetscInt          xs, xm,  i0, i1, i2, i3
   PetscScalar       v(3)
   MatStencil   row(4,1), col(4,3)
   type ( poisson_1d ) :: ctx
+  i0 = 0
   i1 = 1
-  i7 = 3
+  i2 = 2
+  i3 = 3
   call KSPGetDM ( ksp, da, ierr )
   call DMDAGetInfo ( da, PETSC_NULL_INTEGER, mx, &
        PETSC_NULL_INTEGER, PETSC_NULL_INTEGER, &
@@ -104,7 +112,23 @@ subroutine ComputeMatrix(ksp,JJ,jac,ctx,ierr)
      row(MatStencil_i,1) = i
      if ( i.eq.0 .or. i.eq.mx-1 ) then
         v(1) = 1.0
-        call MatSetValuesStencil(jac,i1,row,i1,row,v,INSERT_VALUES,ierr)
+        select case ( ctx % bc )
+        case ( BC_DD, BC_DP )
+           call MatSetValuesStencil( jac, i1, row, i1, row, v, &
+                INSERT_VALUES,ierr)
+        case ( BC_DN )
+           if ( i .eq. 0 ) then
+              call MatSetValuesStencil( jac, i1, row, i1, row, v, &
+                   INSERT_VALUES,ierr)
+           else
+              v(1) = -2.0
+              v(2) =  2.0
+              col(MatStencil_i,1) = i - 1
+              col(MatStencil_i,1) = i
+              call MatSetValuesStencil( jac, i1, row, i2, col, v, &
+                   INSERT_VALUES,ierr)
+           end if
+        end select
      else
         v(1) = -1.0
         v(2) =  2.0
@@ -112,9 +136,10 @@ subroutine ComputeMatrix(ksp,JJ,jac,ctx,ierr)
         col(MatStencil_i,1) = i-1
         col(MatStencil_i,2) = i
         col(MatStencil_i,3) = i+1
-        call MatSetValuesStencil(jac,i1,row,i7,col,v,INSERT_VALUES,ierr)
+        call MatSetValuesStencil(jac,i1,row,i3,col,v,INSERT_VALUES,ierr)
      endif
   end do
   call MatAssemblyBegin(jac,MAT_FINAL_ASSEMBLY,ierr)
   call MatAssemblyEnd(jac,MAT_FINAL_ASSEMBLY,ierr)
+
 end subroutine ComputeMatrix

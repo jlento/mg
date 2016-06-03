@@ -2,7 +2,7 @@ module mod_poisson_1d
   use mod_defs
   implicit none
 
-  integer, parameter :: BC_DD = 1, BC_NN = 2, BC_PP = 3
+  integer, parameter :: BC_DD = 1, BC_DP = 2, BC_DN = 3
 
   type poisson_1d
      real ( fp ), dimension ( : ), allocatable :: f, u
@@ -40,12 +40,12 @@ contains
     select case ( s )
     case ( 'DD' )
        bc_type = BC_DD
-    case ( 'NN' )
-       bc_type = BC_NN
-    case ( 'PP' )
-       bc_type = BC_PP
+    case ( 'DP' )
+       bc_type = BC_DP
+    case ( 'DN' )
+       bc_type = BC_DN
     case default
-       print *, 'ERROR: Unknown boundary condition'
+       print *, 'ERROR: Unknown or not implemented boundary condition'
        stop
     end select
   end function bc_type
@@ -64,18 +64,6 @@ contains
     do i = 2, n - 1
        f ( i ) = u ( i + 1 ) - 2.0 * u ( i ) + u ( i - 1 )
     end do
-    
-    select case ( bc )
-    case ( BC_DD )
-       f ( 1 ) = 0.0_fp
-       f ( n ) = 0.0_fp
-    case ( BC_PP )
-       f ( 1 ) = 2.0 * u ( 1 ) - u ( 2 ) - u ( n - 1 )
-       f ( n ) = f ( 1 )
-    case ( BC_NN )
-       f ( 1 ) = u ( 2 ) - bc_ax
-       f ( n ) = u ( n - 1 ) + bc_bx
-    end select
 
   end function laplace
 

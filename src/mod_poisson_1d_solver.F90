@@ -37,8 +37,10 @@ contains
           call poisson_GS_iteration_1d ( system )
        case ( MULTIGRID )
           call poisson_MG_W_cycle_1d ( system )
+#ifdef HAVE_PETSC
        case ( PETSC_MG )
           call poisson_PETSc_MG_1d ( system )
+#endif
        case default
           write ( eu, '(a, """",a,""".")' ) &
                'Unknown solver ', method

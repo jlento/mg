@@ -15,24 +15,20 @@ contains
          f => x % f, &
          n => size ( x % u ) - 1 )
       
-      select case ( x % bc )
-      case ( BC_PP )
-         u ( 1 ) = 0.5_fp * ( f ( 1 ) + u ( n ) + u ( 2 ) )
-      case ( BC_NN )
-         u ( 1 ) = u ( 2 ) - x % bc_ax
-      end select
+      ! Here we have always Dirichlet boundary condition at x = 0
+      u ( 1 ) = x % bc_ax
       
 !#define REDBLACK
 #ifndef REDBLACK
 
-      ! Natural ordering Gauss-Seidel
+      ! Interior points, natural ordering Gauss-Seidel
       do i = 2, n
          u ( i ) = 0.5_fp * ( f ( i ) + u ( i - 1 ) + u ( i + 1 ) )
       end do
 
 #else
       
-      ! Red-Black Gauss-Seidel
+      ! Interior points, red-black Gauss-Seidel
       if ( size ( u ) > 3 ) then
          u ( 3 : n : 2 ) = 0.5_fp * ( f ( 3 : n : 2 ) &
               + u ( 2 : n - 1 : 2 ) + u ( 4 : n + 1: 2 ) )
@@ -42,13 +38,10 @@ contains
 
 #endif
 
+      ! Boundary x = 1
       select case ( x % bc )
-      case ( BC_PP )
-         u ( n + 1 ) = u ( 1 )
-         u = u - u ( 1 )
-      case ( BC_NN )
-         u ( n + 1 ) = u ( n ) + x % bc_bx
-         u = u - u ( 1 )
+      case ( BC_DN )
+         u ( n+1 ) = u ( n )  + x % bc_bx - 0.5_fp * f ( n+1 )
       end select
 
     end associate
