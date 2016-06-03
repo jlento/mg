@@ -1,15 +1,25 @@
-Multigrid demo in 1D
-====================
+Multigrid example in 1D
+=======================
 
-This demo shows how iterative Jacobi, Gauss-Seidel and Multigrid
-solutions converge in case of Poisson equation in 1D for a simple,
-fixed source. The iteration is stopped when the change in the residual
-between subsequent iterations is small.
+This example solves 1D Poisson equation using Jacobi, Gauss-Seidel,
+and Multigrid methods.
+
+This example demonstrates that
+
+- Jacobi and Gauss-Seidel methods converge very slowly for any
+  larger system sizes
+
+- multigrid converges well independent of system size (number of
+  discretization points)
+
+- change in the iterative solution (or change in the residual) is in
+  general not a reliable convergence criteria (absolute residual is
+  better)
 
 The output of the demo can be directly piped to gnuplot5.
 
-If PETSc is available, it is used to solve the equation using
-it's own multigrid solver.
+If PETSc is available, it's multigrid preconditioner is additionally
+used to solve the equation.
 
 Also, the demo contains sources that can be used to visualize the
 development of solution at runtime with gnuplot.
@@ -57,6 +67,7 @@ Play
 
 One can vary the size of the system and the boundary conditions and
 the solver with the 1st and 2nd command line argument,
-respectively. Valid values for boundary conditions are DD, NN and
-PP, for Dirichlet, Neumann, and periodic boundary conditions,
-respectively.
+respectively. Valid values for boundary conditions are DD, DN and DP,
+for Dirichlet, Neumann, and periodic boundary conditions on the right
+boundary (x=1), respectively. Left boundary (x=0) has Dirichlet
+boundary conditions in all cases (to fix the solution).
