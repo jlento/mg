@@ -19,6 +19,7 @@ program poisson_identity_test_1d
 #include <petsc/finclude/petscsys.h>
   PetscErrorCode :: ierr
   call  PetscInitialize( PETSC_NULL_CHARACTER, ierr )
+  CHKERRQ(ierr)
 #endif
 
   call read_command_line_args()
@@ -38,7 +39,7 @@ program poisson_identity_test_1d
 
   ! Reference system
   u     = test_solution ( nx, bc_type ( bc ), bc_ax, bc_bx )
-  f     = - laplace ( u, bc_type ( bc ), bc_ax, bc_bx )
+  f     = -laplace ( u )
   
   ! Solvers
   do i = 1, nsolvers
@@ -52,6 +53,7 @@ program poisson_identity_test_1d
 
 #ifdef HAVE_PETSC
   call PetscFinalize ( ierr )
+  CHKERRQ(ierr)
 #endif
   
 contains

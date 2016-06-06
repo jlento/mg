@@ -51,10 +51,8 @@ contains
   end function bc_type
 
   
-  function laplace ( u, bc, bc_ax, bc_bx ) result ( f )
+  function laplace ( u ) result ( f )
     real ( fp ), dimension ( : ), intent ( in ) :: u
-    integer, intent ( in ) :: bc
-    real ( fp ), intent ( in ) :: bc_ax, bc_bx
     real ( fp ), dimension ( : ), allocatable :: f
     integer :: i, n
 
