@@ -37,7 +37,7 @@ clean :
 	rm -f *.o *.mod deps.mk $(PROG)
 
 deps.mk : $(lastword $(MAKEFILE_LIST)) $(SRC_$(PROG))
-	[ -x $(MAKEDEPF90) ] && $(MAKEDEPF90) $(filter -D%,$(FCFLAGS)) -b '' $^ > $@
+	[ -x $(MAKEDEPF90) ] && $(MAKEDEPF90) $(filter -D%,$(FCFLAGS)) -b '' $(filter-out %makefile,$^) > $@
 
 include deps.mk
 
